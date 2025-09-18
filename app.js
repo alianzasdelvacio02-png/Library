@@ -15,8 +15,8 @@ function renderizar(librosFiltrados) {
     cont.innerHTML = '<p>No se encontraron libros.</p>';
     return;
   }
-  cont.innerHTML = librosFiltrados.map((b, i) => `
-    <article class="card" data-id="${i}">
+  cont.innerHTML = librosFiltrados.map(b => `
+    <article class="card">
       <img src="${b.portada}" alt="Portada ${b.titulo}" onerror="this.style.display='none'">
       <div class="meta">
         <h3>${b.titulo}</h3>
@@ -25,14 +25,6 @@ function renderizar(librosFiltrados) {
       </div>
     </article>
   `).join('');
-
-  // ➕ Evento click para abrir modal
-  document.querySelectorAll(".card").forEach(card => {
-    card.addEventListener("click", () => {
-      const id = card.dataset.id;
-      abrirModal(libros[id]); // 🔥 ahora abre modal en lugar de detalle.html
-    });
-  });
 }
 
 // Busca por título, categoría o descripción
@@ -46,11 +38,11 @@ function buscar(q) {
   );
 }
 
-// Carga inicial de datos desde bookdes.json 🚀
-fetch('bookdes.json')
+// Carga inicial de datos
+fetch('books.json')
   .then(r => r.json())
   .then(data => {
-    libros = data.libros || data;
+    libros = data;
     renderizar(libros);
   })
   .catch(err => {
@@ -62,23 +54,3 @@ fetch('bookdes.json')
 document.getElementById('buscar').addEventListener('input', (e) => {
   renderizar(buscar(e.target.value));
 });
-
-// Ejemplo de función para abrir modal
-// Ejemplo de función para abrir modal
-function abrirModal(libro) {
-  document.getElementById("modalTitulo").innerText = libro.titulo;
-  document.getElementById("modalDescripcion").innerText = libro.descripcion;
-  document.getElementById("modalCategoria").innerText = libro.categoria;
-
-  // ✅ Mostrar la portada como imagen
-  const img = document.getElementById("modalPortada");
-  img.src = libro.portada;
-  img.alt = `Portada de ${libro.titulo}`;
-  img.onerror = () => { 
-    img.style.display = "none"; 
-  };
-
-  document.getElementById("modal").style.display = "flex";
-}
-
-
