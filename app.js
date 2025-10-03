@@ -1,4 +1,4 @@
-// Normaliza texto (elimina tildes y convierte a minúsculas)
+/ Normaliza texto (elimina tildes y convierte a minúsculas)
 function normalizarTexto(texto = "") {
   return texto
     .normalize("NFD")
